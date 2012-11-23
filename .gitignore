@@ -1,0 +1,8 @@
+*.swp
+*.vim
+*~
+*.so
+bin/
+gen/
+proguard-project.txt
+hs_err_pid*.log

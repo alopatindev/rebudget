@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add outcome filter"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Find and select SMS that should be used as template"
+        />
+    <EditText
+        android:id="@+id/sms_contains_text"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="SMS contains text (required)"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Last 5 found SMS"
+        />
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:drawSelectorOnTop="false"
+        android:minHeight="180dp"
+        />
+    <EditText
+        android:id="@+id/sms_address"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="SMS address (required)"
+        />
+    <EditText
+        android:id="@+id/sms_cost_integer_before"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Text before SMS cost (integer) (required)"
+        />
+    <EditText
+        android:id="@+id/sms_cost_integer_after"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Text after SMS cost (integer) (required)"
+        />
+    <EditText
+        android:id="@+id/sms_cost_hundr_before"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Text before SMS cost (hundredth: cents, kopecs, etc.)"
+        />
+    <EditText
+        android:id="@+id/sms_cost_hundr_after"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Text after SMS cost (hundredth: cents, kopecs, etc.)"
+        />
+    <EditText
+        android:id="@+id/sms_cost_integer_remaining_before"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Text before remaining sum (integer)"
+        />
+    <EditText
+        android:id="@+id/sms_cost_integer_remaining_after"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Text after remaining sum (integer)"
+        />
+    <EditText
+        android:id="@+id/sms_cost_hundr_remaining_before"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Text before remaining sum (hundredth: cents, kopecs, etc.)"
+        />
+    <EditText
+        android:id="@+id/sms_cost_hundr_remaining_after"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Text after remaining sum (hundredth)"
+        />
+</LinearLayout>

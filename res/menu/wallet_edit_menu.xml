@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/add_outcome_filter"
+          android:title="add outcome filter" />
+    <item android:id="@+id/add_income_filter"
+          android:title="add income filter" />
+    <item android:id="@+id/remove_wallet"
+          android:title="remove wallet" />
+</menu>
