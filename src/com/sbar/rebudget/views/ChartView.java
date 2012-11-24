@@ -18,15 +18,15 @@ public class ChartView extends View {
     ArrayList<Piece> m_pieces = new ArrayList<Piece>();  // sorted by angles
 
     //float m_totalMoney = 0.0;
-    float m_totalMoney = 15000.0f + 5000.0f + 3000.0f;
+    float m_totalMoney = 100.0f;
 
     public ChartView(Context context) {
         super(context);
         m_paint.setAntiAlias(true);
 
-        addPiece("Reserved", 0xff0000ff, 15000.0f, 4050.10f);
-        addPiece("Food", 0x00ff00ff, 5000.0f, 1040.85f);
-        addPiece("Misc", 0x0000ffff, 3000.0f, 2040.85f);
+        addPiece("Reserved", 0xffff0000, 50.0f, 20.10f);
+        addPiece("Food", 0xff00ff00, 40.0f, 45.0f);
+        addPiece("Misc", 0xff0000ff, 10.0f, 5.0f);
         sortPieces();
     }
 
@@ -34,7 +34,6 @@ public class ChartView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        MainTabActivity.LOGI("onDraw");
         m_lastAngle = 0.0f;
         for (Piece p : m_pieces)
             drawPiece(canvas, p);
@@ -45,38 +44,42 @@ public class ChartView extends View {
 
         float rectW = getWidth() > getHeight() ? getHeight() : getWidth();
 
-        m_paint.setColor(piece.color);
+        m_paint.setColor(getDarkerColor(piece.color, 0x80));
         canvas.drawArc(new RectF(0, 0, rectW, rectW),
                        m_lastAngle,
-                       m_lastAngle + piece.angleSpent,
+                       piece.angleSpent,
                        true,
                        m_paint);
         m_lastAngle += piece.angleSpent;
 
-        m_paint.setColor(getDarkerColor(piece.color, 50));
+        // remaining
+        if (piece.anglePlanned - piece.angleSpent <= 0)
+            return;
+
+        m_paint.setColor(piece.color);
         canvas.drawArc(new RectF(0, 0, rectW, rectW),
                        m_lastAngle,
-                       m_lastAngle + piece.anglePlanned,
+                       piece.anglePlanned - piece.angleSpent,
                        true,
                        m_paint);
-        m_lastAngle += piece.anglePlanned;
-
-        //m_paint.setColor(0x880000ff);
-        //canvas.drawArc(new RectF(0, 0, 300, 50), 0.0f, 170.0f, true, m_paint);
+        m_lastAngle += (piece.anglePlanned - piece.angleSpent);
     }
 
     int getDarkerColor(int color, int darker) {
-        int r = (color >> (3*8)) & 0xFF;
-        int g = (color >> (2*8)) & 0xFF;
-        int b = (color >> (1*8)) & 0xFF;
+        int a = 0xFF;
+        int r = (color >> (2*8)) & 0xFF;
+        int g = (color >> (1*8)) & 0xFF;
+        int b = (color >> (0*8)) & 0xFF;
         r -= darker;
         g -= darker;
         b -= darker;
-        int a = 0xFF;
         if (r < 0) r = 0;
         if (g < 0) g = 0;
         if (b < 0) b = 0;
-        int dcolor = (r << (3*8)) | (g << (2*8)) | (b << (1*8)) | (a << (0*8));
+        if (r > 0xFF) r = 0xFF;
+        if (g > 0xFF) g = 0xFF;
+        if (b > 0xFF) b = 0xFF;
+        int dcolor = (a << (3*8)) | (r << (2*8)) | (g << (1*8)) | (b << (0*8));
         return dcolor;
     }
 
@@ -86,6 +89,8 @@ public class ChartView extends View {
         // planned - ?
         float anglePlanned = (moneyPlanned * 360.0f) / m_totalMoney;
         float angleSpent = (moneySpent * 360.0f) / m_totalMoney;
+        if (angleSpent > anglePlanned)
+            angleSpent = anglePlanned;
         m_pieces.add(new Piece(text, color, anglePlanned, angleSpent));
     }
 
