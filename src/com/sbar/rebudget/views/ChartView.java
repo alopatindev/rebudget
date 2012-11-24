@@ -51,7 +51,8 @@ public class ChartView extends View {
 
         m_paint.setTextSize(22);
         final float padding = m_paint.getFontSpacing();
-        final float angleSpace = 5.0f;
+        //final float angleSpace = 10.0f;
+        final float angleSpace = 0.0f;
 
         m_paint.setColor(piece.color);
         canvas.drawText(piece.text0,
@@ -71,17 +72,22 @@ public class ChartView extends View {
                         m_paint);
         m_textY += padding * 2.0f;
 
-        m_paint.setColor(piece.color);
+        // remaining money
+        m_paint.setColor(getDarkerColor(piece.color, 200));
         canvas.drawArc(new RectF(0, 0, m_rectW, m_rectW),
                        m_lastAngle + angleSpace,
                        piece.anglePlanned - angleSpace,
                        true,
                        m_paint);
 
-        m_paint.setColor(getDarkerColor(piece.color, 0x80));
-        canvas.drawArc(new RectF(2, 2, m_rectW - 2, m_rectW - 2),
-                       m_lastAngle + angleSpace + 0.7f,
-                       piece.angleSpent - angleSpace - 1.0f,
+        // spent money
+        //final float stepPadding = 2.0f;
+        final float stepPadding = 0.0f;
+        m_paint.setColor(piece.color);
+        canvas.drawArc(new RectF(stepPadding, stepPadding,
+                                 m_rectW - stepPadding, m_rectW - stepPadding),
+                       m_lastAngle + angleSpace/* + 0.7f*/,
+                       piece.angleSpent - angleSpace/* - 1.0f*/,
                        true,
                        m_paint);
 
