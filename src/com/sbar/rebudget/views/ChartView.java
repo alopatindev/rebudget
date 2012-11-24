@@ -33,12 +33,14 @@ public class ChartView extends View {
     float m_lastAngle;
     float m_rectW;
     float m_textY;
+    float m_textPaddingX;
 
     @Override
     protected void onDraw(Canvas canvas) {
         m_lastAngle = 0.0f;
-        m_textY = 0.0f;
         m_rectW = getWidth() > getHeight() ? getHeight() : getWidth();
+        m_textY = getWidth() > getHeight() ? 0.0f : m_rectW;
+        m_textPaddingX = getWidth() > getHeight() ? m_rectW : 0.0f;
 
         for (Piece p : m_pieces)
             drawPiece(canvas, p);
@@ -46,32 +48,40 @@ public class ChartView extends View {
 
     private void drawPiece(Canvas canvas, final Piece piece) {
         m_paint.setStyle(Paint.Style.FILL);
-        m_paint.setTextSize(19);
 
-        float padding = m_paint.getFontSpacing();
+        m_paint.setTextSize(22);
+        final float padding = m_paint.getFontSpacing();
+        final float angleSpace = 5.0f;
 
         m_paint.setColor(piece.color);
-        canvas.drawText(piece.text0, m_rectW + padding, m_textY + padding, m_paint);
+        canvas.drawText(piece.text0,
+                        m_textPaddingX + padding,
+                        m_textY + padding,
+                        m_paint);
         m_textY += padding;
 
         // FIXME: we should check money instead of angles
         int moneyColor = piece.anglePlanned > piece.angleSpent
                          ? 0xffffffff : 0xffff0000;
         m_paint.setColor(moneyColor);
-        canvas.drawText(piece.text1, m_rectW + padding, m_textY + padding, m_paint);
-        m_textY += padding * 3.0f;
+        m_paint.setTextSize(19);
+        canvas.drawText(piece.text1,
+                        m_textPaddingX + padding,
+                        m_textY + padding,
+                        m_paint);
+        m_textY += padding * 2.0f;
 
         m_paint.setColor(piece.color);
         canvas.drawArc(new RectF(0, 0, m_rectW, m_rectW),
-                       m_lastAngle,
-                       piece.anglePlanned,
+                       m_lastAngle + angleSpace,
+                       piece.anglePlanned - angleSpace,
                        true,
                        m_paint);
 
         m_paint.setColor(getDarkerColor(piece.color, 0x80));
-        canvas.drawArc(new RectF(5, 5, m_rectW - 5, m_rectW - 5),
-                       m_lastAngle,
-                       piece.angleSpent,
+        canvas.drawArc(new RectF(2, 2, m_rectW - 2, m_rectW - 2),
+                       m_lastAngle + angleSpace + 0.7f,
+                       piece.angleSpent - angleSpace - 1.0f,
                        true,
                        m_paint);
 
@@ -138,8 +148,8 @@ public class ChartView extends View {
     class PieceComparator implements Comparator<Piece> {
         @Override
         public int compare(Piece p1, Piece p2) {
-            return (int) ((p1.anglePlanned + p1.angleSpent) -
-                          (p2.anglePlanned + p2.angleSpent));
+            return (int) ((p2.anglePlanned + p2.angleSpent) -
+                          (p1.anglePlanned + p1.angleSpent));
         }
     }
 }
