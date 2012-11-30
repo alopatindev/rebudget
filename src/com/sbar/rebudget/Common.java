@@ -72,54 +72,40 @@ public class Common {
 
         ArrayList<HashMap> list = new ArrayList<HashMap>();
 
-        int num = 0;
-        do {
-            HashMap<String, String> hm = new HashMap<String, String>();
-            hm.put("id", "");
-            hm.put("address", "");
-            hm.put("text", "");
-            for(int i = 0; i < cursor.getColumnCount(); i++)
-            {
-                String key = cursor.getColumnName(i) + "";
-                String val = cursor.getString(i) + "";
-                String msgData = key + ": " + val;
+        if (searchPattern.length() > 0) {
+            int num = 0;
+            do {
+                HashMap<String, String> hm = new HashMap<String, String>();
+                hm.put("id", "");
+                hm.put("address", "");
+                hm.put("text", "");
+                for(int i = 0; i < cursor.getColumnCount(); i++)
+                {
+                    String key = cursor.getColumnName(i) + "";
+                    String val = cursor.getString(i) + "";
+                    String msgData = key + ": " + val;
 
-                if (key.equals("_id") ||
-                    key.equals("date") ||
-                    key.equals("date_sent"))
-                    hm.put("id", hm.get("id") + val);
-                else if (key.equals("address"))
-                    hm.put("address", val);
-                else if (key.equals("body"))
-                    hm.put("text", val);
-            }
+                    if (key.equals("_id") ||
+                        key.equals("date") ||
+                        key.equals("date_sent"))
+                        hm.put("id", hm.get("id") + val);
+                    else if (key.equals("address"))
+                        hm.put("address", val);
+                    else if (key.equals("body"))
+                        hm.put("text", val);
+                }
 
+                if (address.length() > 0 && !hm.get("address").equals(address))
+                    continue;
+                if (searchPattern.length() > 0 &&
+                    hm.get("text").indexOf(searchPattern) == -1)
+                    continue;
 
-
-
-
-
-
-
-
-            /*if (address.length() > 0 && !hm.get("address").equals(address))
-                continue;
-            if (searchPattern.length() > 0 &&
-                hm.get("body").indexOf(address) == -1)
-                continue;*/
-
-            list.add(hm);
-            ++num;
-            /*if (num >= limit)
-                break;*/
-        } while (cursor.moveToNext());
-
-        if (num == 0) {
-            HashMap<String, String> hm = new HashMap<String, String>();
-            hm.put("id", "");
-            hm.put("address", "");
-            hm.put("text", "Not found");
-            list.add(hm);
+                list.add(hm);
+                ++num;
+                if (num >= limit)
+                    break;
+            } while (cursor.moveToNext());
         }
 
         return list.toArray(new HashMap[0]);
