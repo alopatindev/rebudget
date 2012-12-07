@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.content.Intent;
 
+import com.sbar.rebudget.Common;
 import com.sbar.rebudget.R;
 
 public class WalletsActivity extends ListActivity {
@@ -72,7 +73,7 @@ public class WalletsActivity extends ListActivity {
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                MainTabActivity.LOGI("add new wallet");
+                Common.LOGI("add new wallet");
                 showDialog(DIALOG_NEW_WALLET);
             }
         });
@@ -80,7 +81,7 @@ public class WalletsActivity extends ListActivity {
 
     @Override 
     public void onListItemClick(ListView l, View v, int position, long id) {
-        MainTabActivity.LOGI("pos:" + position + " id:"+id);
+        Common.LOGI("pos:" + position + " id:"+id);
     }
 
     @Override
@@ -103,7 +104,7 @@ public class WalletsActivity extends ListActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         EditText ed = (EditText) v.findViewById(R.id.wallet_name);
                         String walletName = ed.getText().toString();
-                        MainTabActivity.LOGI("create new wallet '" +
+                        Common.LOGI("create new wallet '" +
                                              walletName + "'");
                         addToListView(walletName);
                         ed.setText("");
@@ -156,7 +157,7 @@ public class WalletsActivity extends ListActivity {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-                            MainTabActivity.LOGI("remove wallet '" + walletName + "'");
+                            Common.LOGI("remove wallet '" + walletName + "'");
                         }
                     }
                 );

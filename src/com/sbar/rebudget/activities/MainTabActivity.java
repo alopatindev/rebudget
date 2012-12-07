@@ -5,17 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
-import android.util.Log;
 
-import com.sbar.rebudget.R;
 import com.sbar.rebudget.activities.PlansActivity;
 import com.sbar.rebudget.activities.WalletsActivity;
 import com.sbar.rebudget.activities.StatsActivity;
-
+import com.sbar.rebudget.Common;
 import com.sbar.rebudget.receivers.SmsListener;
+import com.sbar.rebudget.R;
 
 public class MainTabActivity extends TabActivity {
-    public static String LOG_TAG = "ReBudget";
     private TabHost m_tabHost = null;
 
     @Override
@@ -39,8 +37,4 @@ public class MainTabActivity extends TabActivity {
         spec.setContent(intent);
         m_tabHost.addTab(spec);
     }
-
-    public static void LOGI(final String text) { Log.i(LOG_TAG, text); }
-    public static void LOGE(final String text) { Log.e(LOG_TAG, text); }
-    public static void LOGW(final String text) { Log.w(LOG_TAG, text); }
 }

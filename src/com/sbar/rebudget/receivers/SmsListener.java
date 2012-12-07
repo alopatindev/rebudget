@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
-import com.sbar.rebudget.activities.MainTabActivity;
-
 import android.net.Uri;
 import android.database.Cursor;
+import com.sbar.rebudget.activities.MainTabActivity;
+import com.sbar.rebudget.Common;
 
 public class SmsListener extends BroadcastReceiver {
 
@@ -31,10 +31,10 @@ public class SmsListener extends BroadcastReceiver {
                         msgFrom = msgs[i].getOriginatingAddress();
                         msgBody += msgs[i].getMessageBody();
                     }
-                    MainTabActivity.LOGI("sms from '" + msgFrom + "'");
-                    MainTabActivity.LOGI("sms text '" + msgBody + "'");
+                    Common.LOGI("sms from '" + msgFrom + "'");
+                    Common.LOGI("sms text '" + msgBody + "'");
                 } catch(Exception e) {
-                    MainTabActivity.LOGE("Exception caught: " + e.getMessage());
+                    Common.LOGE("Exception caught: " + e.getMessage());
                 }
             }
         }
@@ -58,9 +58,9 @@ public class SmsListener extends BroadcastReceiver {
                     key.equals("date_sent") ||
                     key.equals("address") ||
                     key.equals("body"))
-                    MainTabActivity.LOGI(msgData);
+                    Common.LOGI(msgData);
             }
-            MainTabActivity.LOGI("====");
+            Common.LOGI("====");
         } while (cursor.moveToNext());
     }*/
 }

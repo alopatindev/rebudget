@@ -5,9 +5,10 @@
     android:layout_height="match_parent"
     >
     <TextView
+        android:id="@+id/payment_parse_example"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Payment costs: ??.00"
+        android:text="Payment costs: ??.??"
         />
     <EditText
         android:id="@+id/sms_cost_integer_regexp"

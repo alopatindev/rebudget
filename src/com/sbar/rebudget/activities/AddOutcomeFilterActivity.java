@@ -65,7 +65,7 @@ public class AddOutcomeFilterActivity extends ListActivity {
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                MainTabActivity.LOGI("next");
+                Common.LOGI("next");
                 Intent intent = new Intent(AddOutcomeFilterActivity.instance,
                                            AddFilterCostActivity.class);
                 startActivity(intent);
@@ -75,7 +75,7 @@ public class AddOutcomeFilterActivity extends ListActivity {
 
     public void searchSMS(String pattern)
     {
-        Context context = (Context)AddOutcomeFilterActivity.instance;
+        Context context = (Context) AddOutcomeFilterActivity.instance;
         m_arraySMS = Common.getSMSes(context, "", pattern, 5);
 
         ArrayList<String> lsText = new ArrayList<String>();

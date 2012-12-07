@@ -4,10 +4,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.telephony.SmsMessage;
+import android.util.Log;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Common {
+    public static String LOG_TAG = "ReBudget";
+    public static void LOGI(final String text) { Log.i(LOG_TAG, text); }
+    public static void LOGE(final String text) { Log.e(LOG_TAG, text); }
+    public static void LOGW(final String text) { Log.w(LOG_TAG, text); }
+
     /*public static HashMap[] getSMSes(
         Context context, String address, String searchPattern, int limit
     )
@@ -64,8 +70,15 @@ public class Common {
         Context context, String address, String searchPattern, int limit
     )
     {
+        ArrayList<HashMap> list = new ArrayList<HashMap>();
+        HashMap<String, String> hm = new HashMap<String, String>();
+        hm.put("id", "12345");
+        hm.put("address", "111222");
+        hm.put("text", "u spent 100.12 rub. now u have 300.34 rub.");
+        list.add(hm);
+
         // FIXME: should be optimized by special query
-        Cursor cursor = context.getContentResolver().query(
+        /*Cursor cursor = context.getContentResolver().query(
             Uri.parse("content://sms/inbox"), null, null, null, null
         );
         cursor.moveToFirst();
@@ -106,7 +119,7 @@ public class Common {
                 if (num >= limit)
                     break;
             } while (cursor.moveToNext());
-        }
+        }*/
 
         return list.toArray(new HashMap[0]);
     }
