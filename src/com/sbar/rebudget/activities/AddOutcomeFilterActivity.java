@@ -29,6 +29,7 @@ public class AddOutcomeFilterActivity extends ListActivity {
     HashMap<String, String>[] m_arraySMS = null;
     TextView m_smsAddress = null;
     HashMap<String, String> m_smsSelected = null;
+    Button m_nextButton = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,14 +37,22 @@ public class AddOutcomeFilterActivity extends ListActivity {
         instance = this;
 
         setContentView(R.layout.add_filter);
+
+        m_nextButton = (Button) findViewById(R.id.next);
         addButtonsListeners();
 
         m_smsAddress = (TextView) findViewById(R.id.sms_address);
         EditText smsContainsText = (EditText) findViewById(R.id.sms_contains_text);
+        AddOutcomeFilterActivity.instance.searchSMS("");
         smsContainsText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                AddOutcomeFilterActivity.instance.searchSMS(s.toString());
+                final String text = s.toString();
+                AddOutcomeFilterActivity.instance.searchSMS(text);
+                ListAdapter adapter = AddOutcomeFilterActivity.instance.getListAdapter();
+                AddOutcomeFilterActivity.instance.m_nextButton.setEnabled(
+                    adapter.getCount() > 0 && text.length() > 0
+                );
             }
 
             @Override
@@ -61,11 +70,10 @@ public class AddOutcomeFilterActivity extends ListActivity {
     }
 
     private void addButtonsListeners() {
-        Button button = (Button) findViewById(R.id.next);
-        button.setOnClickListener(new OnClickListener() {
+        m_nextButton.setEnabled(false);
+        m_nextButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Common.LOGI("next");
                 Intent intent = new Intent(AddOutcomeFilterActivity.instance,
                                            AddFilterCostActivity.class);
                 startActivity(intent);

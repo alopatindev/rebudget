@@ -25,6 +25,7 @@ public class AddFilterCostActivity extends Activity {
     TextView m_paymentParseExample = null;
     String m_exampleCostInteger = "??";
     String m_exampleCostFrac = "??";
+    Button m_nextButton = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class AddFilterCostActivity extends Activity {
             @Override
             public void afterTextChanged(Editable s) {
                 AddFilterCostActivity.instance.setSmsCostIntegerRegexp(s.toString());
+                AddFilterCostActivity.instance.m_nextButton.setEnabled(m_exampleCostInteger != "??");
             }
 
             @Override
@@ -67,6 +69,16 @@ public class AddFilterCostActivity extends Activity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+        m_nextButton = (Button) findViewById(R.id.next);
+        m_nextButton.setEnabled(false);
+        m_nextButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                //Intent intent = new Intent(this, AddFilterCostRemaining.class);
+                //startActivity(intent);
+            }
         });
     }
 

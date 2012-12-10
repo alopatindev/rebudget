@@ -1,0 +1,31 @@
+UI:
+    outcome filter
+        sms address
+        text contains
+        cost integer regexp
+        cost frac regexp
+        store
+        category
+
+    income filter
+        sms address
+        text contains
+        cost integer regexp
+        cost frac regexp
+
+
+DB:
+    filters
+        int id
+        bool outcome
+        string sms_text_contains
+        string cost_integer_regexp
+        string cost_frac_regexp
+        string store_regexp
+
+    categories
+        int id
+        string name
+        int color
+        float money_planned
+        float money_spent

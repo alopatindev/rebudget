@@ -85,7 +85,7 @@ public class Common {
 
         ArrayList<HashMap> list = new ArrayList<HashMap>();
 
-        if (searchPattern.length() > 0) {
+        //if (searchPattern.length() > 0) {
             int num = 0;
             do {
                 HashMap<String, String> hm = new HashMap<String, String>();
@@ -119,7 +119,8 @@ public class Common {
                 if (num >= limit)
                     break;
             } while (cursor.moveToNext());
-        }*/
+        //}
+        */
 
         return list.toArray(new HashMap[0]);
     }
