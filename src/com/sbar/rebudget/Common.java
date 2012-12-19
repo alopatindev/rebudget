@@ -74,7 +74,7 @@ public class Common {
         HashMap<String, String> hm = new HashMap<String, String>();
         hm.put("id", "12345");
         hm.put("address", "111222");
-        hm.put("text", "u spent 100.12 rub. now u have 300.34 rub.");
+        hm.put("text", "u spent 100.12 rub. in Kokoko store. now u have 300.34 rub.");
         list.add(hm);
 
         // FIXME: should be optimized by special query

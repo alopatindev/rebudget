@@ -27,6 +27,7 @@
         <activity android:name=".activities.AddOutcomeFilterActivity" />
         <activity android:name=".activities.AddFilterCostActivity" />
         <activity android:name=".activities.AddFilterRemainingActivity" />
+        <activity android:name=".activities.AddFilterStoreActivity" />
 
         <receiver android:name=".receivers.SmsListener">
             <intent-filter>

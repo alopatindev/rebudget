@@ -76,8 +76,9 @@ public class AddFilterRemainingActivity extends Activity {
         m_nextButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                //Intent intent = new Intent(this, activity .class);
-                //startActivity(intent);
+                // TODO: if outcome filter
+                Intent intent = new Intent(AddFilterRemainingActivity.instance, AddFilterStoreActivity.class);
+                startActivity(intent);
             }
         });
 
