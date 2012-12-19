@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.sbar.rebudget.R;
-import com.sbar.rebudget.activities.AddFilterRemainingActivity;
 import com.sbar.rebudget.activities.AddOutcomeFilterActivity;
 import com.sbar.rebudget.activities.MainTabActivity;
 import com.sbar.rebudget.Common;
@@ -21,19 +20,19 @@ import com.sbar.rebudget.Common;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AddFilterCostActivity extends Activity {
-    static AddFilterCostActivity instance = null;
+public class AddFilterRemainingActivity extends Activity {
+    static AddFilterRemainingActivity instance = null;
     TextView m_smsText = null;
-    TextView m_paymentParseExample = null;
-    String m_exampleCostInteger = "??";
-    String m_exampleCostFrac = "??";
+    TextView m_remainingParseExample = null;
+    String m_exampleRemainingInteger = "??";
+    String m_exampleRemainingFrac = "??";
     Button m_nextButton = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = this;
-        setContentView(R.layout.add_filter_cost);
+        setContentView(R.layout.add_filter_remaining);
 
         m_smsText = (TextView) findViewById(R.id.sms_text);
         if (AddOutcomeFilterActivity.instance != null) {
@@ -42,14 +41,14 @@ public class AddFilterCostActivity extends Activity {
             m_smsText.setText(s);
         }
 
-        m_paymentParseExample = (TextView) findViewById(R.id.payment_parse_example);
+        m_remainingParseExample = (TextView) findViewById(R.id.remaining_parse_example);
 
-        EditText smsCostInteger = (EditText) findViewById(R.id.sms_cost_integer_regexp);
-        smsCostInteger.addTextChangedListener(new TextWatcher() {
+        EditText smsRemainingInteger = (EditText) findViewById(R.id.sms_remaining_integer_regexp);
+        smsRemainingInteger.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                AddFilterCostActivity.instance.setSmsCostIntegerRegexp(s.toString());
-                AddFilterCostActivity.instance.m_nextButton.setEnabled(m_exampleCostInteger != "??");
+                AddFilterRemainingActivity.instance.setSmsRemainingIntegerRegexp(s.toString());
+                AddFilterRemainingActivity.instance.m_nextButton.setEnabled(m_exampleRemainingInteger != "??");
             }
 
             @Override
@@ -58,12 +57,11 @@ public class AddFilterCostActivity extends Activity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
-
-        EditText smsCostFrac = (EditText) findViewById(R.id.sms_cost_frac_regexp);
-        smsCostFrac.addTextChangedListener(new TextWatcher() {
+        EditText smsRemainingFrac = (EditText) findViewById(R.id.sms_remaining_frac_regexp);
+        smsRemainingFrac.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                AddFilterCostActivity.instance.setSmsCostFracRegexp(s.toString());
+                AddFilterRemainingActivity.instance.setSmsRemainingFracRegexp(s.toString());
             }
 
             @Override
@@ -78,12 +76,12 @@ public class AddFilterCostActivity extends Activity {
         m_nextButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Intent intent = new Intent(AddFilterCostActivity.instance, AddFilterRemainingActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(this, activity .class);
+                //startActivity(intent);
             }
         });
 
-        updatePaymentParseExample();
+        updateRemainingParseExample();
     }
 
     @Override
@@ -92,32 +90,32 @@ public class AddFilterCostActivity extends Activity {
         instance = null;
     }
 
-    public void setSmsCostIntegerRegexp(String regexp) {
+    public void setSmsRemainingIntegerRegexp(String regexp) {
         try {
             Pattern r = Pattern.compile(regexp);
             Matcher m = r.matcher(m_smsText.getText().toString());
-            m_exampleCostInteger = m.find() ? m.group(1) : "??";
-            int num = Integer.parseInt(m_exampleCostInteger.trim());
-        } catch (Throwable e) {
-            m_exampleCostInteger = "??";
-        }
-        updatePaymentParseExample();
-    }
-
-    public void setSmsCostFracRegexp(String regexp) {
-        try {
-            Pattern r = Pattern.compile(regexp);
-            Matcher m = r.matcher(m_smsText.getText().toString());
-            m_exampleCostFrac = m.find() ? m.group(1) : "??";
-            int num = Integer.parseInt(m_exampleCostFrac.trim());
+            m_exampleRemainingInteger = m.find() ? m.group(1) : "??";
+            int num = Integer.parseInt(m_exampleRemainingInteger.trim());
         } catch (Exception e) {
-            m_exampleCostFrac = "??";
+            m_exampleRemainingInteger = "??";
         }
-        updatePaymentParseExample();
+        updateRemainingParseExample();
     }
 
-    public void updatePaymentParseExample() {
-        String text = String.format("Payment costs: %s.%s", m_exampleCostInteger, m_exampleCostFrac);
-        m_paymentParseExample.setText(text);
+    public void setSmsRemainingFracRegexp(String regexp) {
+        try {
+            Pattern r = Pattern.compile(regexp);
+            Matcher m = r.matcher(m_smsText.getText().toString());
+            m_exampleRemainingFrac = m.find() ? m.group(1) : "??";
+            int num = Integer.parseInt(m_exampleRemainingFrac.trim());
+        } catch (Exception e) {
+            m_exampleRemainingFrac = "??";
+        }
+        updateRemainingParseExample();
+    }
+
+    public void updateRemainingParseExample() {
+        String text = String.format("Remaining money: %s.%s", m_exampleRemainingInteger, m_exampleRemainingFrac);
+        m_remainingParseExample.setText(text);
     }
 }

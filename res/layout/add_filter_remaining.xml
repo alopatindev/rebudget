@@ -5,24 +5,32 @@
     android:layout_height="match_parent"
     >
     <TextView
-        android:id="@+id/payment_parse_example"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
+        android:id="@+id/remaining_parse_example"
         />
     <EditText
-        android:id="@+id/sms_cost_integer_regexp"
+        android:id="@+id/sms_remaining_integer_regexp"
         android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Pattern for Payment Cost (dollars, etc.; required, regexp)"
+        android:hint="Pattern for Remaining money (dollars, etc.; regexp)"
         />
     <EditText
-        android:id="@+id/sms_cost_frac_regexp"
+        android:id="@+id/sms_remaining_frac_regexp"
         android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Pattern for Payment Fraction Cost (cents, etc.; regexp)"
+        android:hint="Pattern for Remaining Fraction Money (cents, etc.; regexp)"
+        />
+    <EditText
+        android:id="@+id/sms_store_regexp"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Pattern for store or service (regexp)"
+        android:visibility="gone"
         />
     <TextView
         android:layout_width="match_parent"
