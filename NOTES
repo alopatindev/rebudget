@@ -42,3 +42,5 @@ DB:
     #    int category_id
     #    float planned
     #    float spent
+
+remove unneeded singletons, use ClassName.this in click event handlers
