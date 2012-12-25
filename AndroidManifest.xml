@@ -23,6 +23,7 @@
 
         <activity android:name=".activities.PlansActivity" />
         <activity android:name=".activities.WalletsActivity" />
+        <activity android:name=".activities.CategoriesActivity" />
         <activity android:name=".activities.StatsActivity" />
         <activity android:name=".activities.AddOutcomeFilterActivity" />
         <activity android:name=".activities.AddFilterCostActivity" />

@@ -1,0 +1,6 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/update_category"
+          android:title="update category" />
+    <item android:id="@+id/remove_category"
+          android:title="remove category" />
+</menu>

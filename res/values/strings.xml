@@ -2,4 +2,6 @@
 <resources>
     <string name="app_name">ReBudget</string>
     <string name="wallet_name">Wallet name (debit/credit card)</string>
+    <string name="category_name">Category name (kind of payments: food, clothes, etc.)</string>
+    <string name="category_planned_money">Planned money (100.0 for example)</string>
 </resources>

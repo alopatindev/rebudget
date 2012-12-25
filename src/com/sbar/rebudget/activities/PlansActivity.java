@@ -7,7 +7,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sbar.rebudget.Common;
-import com.sbar.rebudget.DatabaseConnector;
 import com.sbar.rebudget.R;
 import com.sbar.rebudget.views.ChartView;
 
@@ -20,8 +19,7 @@ public class PlansActivity extends Activity {
         m_layout = (LinearLayout) findViewById(R.id.plans_layout);
         m_layout.addView(new ChartView(this));
 
-        DatabaseConnector dc = new DatabaseConnector(this);
-        dc.open();
+        /*dc.open();
         dc.addFilter(-1, true, "1234", "smscontains", "(\\d+?)\\.", "(\\d+?)\\.", "(\\d+?)\\.", "(\\d+?)\\.");
         Cursor c = dc.selectFilters();
         c.moveToFirst();
@@ -31,6 +29,6 @@ public class PlansActivity extends Activity {
                 Common.LOGI("'" + c.getColumnName(i) + "' '" + c.getString(i) + "'");
             }
         } while (c.moveToNext());
-        dc.close();
+        dc.close();*/
     }
 }
