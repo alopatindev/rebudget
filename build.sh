@@ -7,7 +7,9 @@ APP_NAME="ReBudget"
 PACK="com.sbar.rebudget"
 
 # FIXME
-cd ~/coding/github/rebudget
+cd ~/git/rebudget
+
+./clear.sh
 
 #android create project --name "${APP_NAME}" --target "android-15" --path .\
 #--activity MainActivity --package "${PACK}"
@@ -15,4 +17,8 @@ cd ~/coding/github/rebudget
 android update project --name "${APP_NAME}" --path . --target "android-15"
 ant debug
 
-webput bin/*-debug.apk b.apk
+#adb install -r bin/*-debug.apk
+adb uninstall "${PACK}" && adb install -r bin/*-debug.apk
+
+
+#webput bin/*-debug.apk b.apk

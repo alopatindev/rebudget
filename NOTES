@@ -19,9 +19,12 @@ DB:
         int id
         int category_id
         bool outcome
+        string sms_address
         string sms_text_contains
         string cost_integer_regexp
         string cost_frac_regexp
+        string remaining_integer_regexp
+        string remaining_frac_regexp
         string store_regexp
 
     categories
@@ -30,6 +33,8 @@ DB:
         int color
         float money_planned
         float money_spent
+
+    wallets
 
     #stats
     #    int id
