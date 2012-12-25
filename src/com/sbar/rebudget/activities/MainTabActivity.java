@@ -11,7 +11,7 @@ import com.sbar.rebudget.activities.WalletsActivity;
 import com.sbar.rebudget.activities.CategoriesActivity;
 import com.sbar.rebudget.activities.StatsActivity;
 import com.sbar.rebudget.Common;
-import com.sbar.rebudget.DatabaseConnector;
+import com.sbar.rebudget.database.DatabaseConnector;
 import com.sbar.rebudget.receivers.SmsListener;
 import com.sbar.rebudget.R;
 

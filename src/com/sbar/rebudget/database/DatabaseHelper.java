@@ -1,4 +1,4 @@
-package com.sbar.rebudget;
+package com.sbar.rebudget.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

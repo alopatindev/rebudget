@@ -105,8 +105,7 @@ public class CategoriesActivity extends ListActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         EditText ed = (EditText) v.findViewById(R.id.category_name);
                         String categoryName = ed.getText().toString();
-                        Common.LOGI("create new category '" +
-                                             categoryName + "'");
+                        Common.LOGI("create new category '" + categoryName + "'");
                         addToListView(categoryName);
                         ed.setText("");
                     }

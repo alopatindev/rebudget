@@ -1,4 +1,4 @@
-package com.sbar.rebudget;
+package com.sbar.rebudget.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.sbar.rebudget.DatabaseHelper;
+import com.sbar.rebudget.database.DatabaseHelper;
 import com.sbar.rebudget.Common;
 
 public class DatabaseConnector {
