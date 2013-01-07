@@ -1,0 +1,8 @@
+Known bugs:
+
+Wrong title name in wallet rename dialog. Steps to repro:
+    1. Go to wallets tab, add 2 wallets
+    2. Long tap to wallet, rename — see what wallet name is in dialog
+    3. Rename it to another
+    4. Open rename dialog for different wallets, including the last you renamed
+    5. See what wallet names are in rename dialogs

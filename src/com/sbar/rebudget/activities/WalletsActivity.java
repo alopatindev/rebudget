@@ -31,7 +31,8 @@ import com.sbar.rebudget.R;
 public class WalletsActivity extends ListActivity {
     private static final int DIALOG_NEW_WALLET = 1;
     private static final int DIALOG_NEW_WALLET_EXISTS = 2;
-    private static final int DIALOG_REMOVE_WALLET = 3;
+    private static final int DIALOG_RENAME_WALLET = 3;
+    private static final int DIALOG_REMOVE_WALLET = 4;
 
     private ArrayList<Pair<String, Float>> m_listViewItems = null;
     private String m_listViewItemSelected = null;
@@ -159,6 +160,44 @@ public class WalletsActivity extends ListActivity {
                 return builder.create();
             }
 
+        case DIALOG_RENAME_WALLET:
+        {
+            View v = inflater.inflate(R.layout.dialog_new_wallet, null);
+            EditText ed = (EditText) v.findViewById(R.id.wallet_name);
+            String walletName = m_listViewItemSelected;
+
+            ed.setText(walletName);
+
+            builder.setView(v);
+            builder.setMessage("Renaming wallet " + walletName);
+            builder.setCancelable(true);
+            builder.setPositiveButton(
+                "ok",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        EditText ed = (EditText) v.findViewById(R.id.wallet_name);
+                        String walletName = m_listViewItemSelected;
+                        String newWalletName = ed.getText().toString();
+                        Common.LOGI("renaming wallet to '" +
+                                    newWalletName + "'");
+                        if (MainTabActivity.s_dc.renameWallet(walletName, newWalletName))
+                            updateListView();
+                        ed.setText("");
+                    }
+                }
+            );
+            builder.setNegativeButton(
+                "cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                }
+            );
+            return builder.create();
+        }
+
         case DIALOG_REMOVE_WALLET:
             {
                 final View v = inflater.inflate(R.layout.dialog_remove_wallet, null);
@@ -215,6 +254,9 @@ public class WalletsActivity extends ListActivity {
             return true;
         case R.id.add_income_filter:
             //TODO
+            return true;
+        case R.id.rename_wallet:
+            showDialog(DIALOG_RENAME_WALLET);
             return true;
         case R.id.remove_wallet:
             showDialog(DIALOG_REMOVE_WALLET);

@@ -95,19 +95,18 @@ public class DatabaseConnector {
     public boolean deleteWallet(String name)
     {
         open();
-
+        // TODO: remove filters
         return db.delete("wallets", "name = ?", new String[] {name}) != 0;
     }
 
-    public boolean updateWallet(String currentName, String name, float money)
+    public boolean renameWallet(String currentName, String name)
     {
         open();
 
         ContentValues c = new ContentValues();
         c.put("name", name);
-        c.put("money", money);
 
-        return db.update("wallets", c, "where name = ?", new String[] {currentName}) != 0;
+        return db.update("wallets", c, "name = ?", new String[] {currentName}) != 0;
     }
 
     public Cursor selectFilters() {

@@ -3,6 +3,8 @@
           android:title="add outcome filter" />
     <item android:id="@+id/add_income_filter"
           android:title="add income filter" />
+    <item android:id="@+id/rename_wallet"
+          android:title="rename" />
     <item android:id="@+id/remove_wallet"
-          android:title="remove wallet" />
+          android:title="remove" />
 </menu>
