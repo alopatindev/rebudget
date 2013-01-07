@@ -7,9 +7,6 @@ Categories
 Stats
     list with total planned and spent
 
-ChartView
-    implement scrolling
-
 Database
     create all tables, create all queries
     connect categories creation and updating with db

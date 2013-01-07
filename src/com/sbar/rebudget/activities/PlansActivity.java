@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.sbar.rebudget.Common;
@@ -16,8 +17,8 @@ public class PlansActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.plans);
-        m_layout = (LinearLayout) findViewById(R.id.plans_layout);
-        m_layout.addView(new ChartView(this));
+        ScrollView s = (ScrollView) findViewById(R.id.chart_scrollview);
+        s.addView(new ChartView(this));
 
         /*dc.open();
         dc.addFilter(-1, true, "1234", "smscontains", "(\\d+?)\\.", "(\\d+?)\\.", "(\\d+?)\\.", "(\\d+?)\\.");

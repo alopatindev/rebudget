@@ -27,6 +27,7 @@ public class ChartView extends View {
         addPiece("Reserved", 0xffff0000, 50.0f, 20.10f);
         addPiece("Food", 0xff00ff00, 40.0f, 45.0f);
         addPiece("Misc", 0xff0000ff, 10.0f, 5.0f);
+
         sortPieces();
     }
 
@@ -38,12 +39,15 @@ public class ChartView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         m_lastAngle = 0.0f;
-        m_rectW = getWidth() > getHeight() ? getHeight() : getWidth();
+        //m_rectW = getWidth() > getHeight() ? getHeight() : getWidth();
+        m_rectW = getWidth();
         m_textY = getWidth() > getHeight() ? 0.0f : m_rectW;
         m_textPaddingX = getWidth() > getHeight() ? m_rectW : 0.0f;
 
         for (Piece p : m_pieces)
             drawPiece(canvas, p);
+
+        setMinimumHeight((int) (m_textY + m_rectW));
     }
 
     private void drawPiece(Canvas canvas, final Piece piece) {
