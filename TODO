@@ -1,0 +1,21 @@
+Wallets
+    show current balance
+
+Categories
+    default undeletable Reserve category
+
+Stats
+    list with total planned and spent
+
+ChartView
+    implement scrolling
+
+Database
+    create all tables, create all queries
+    connect categories creation and updating with db
+        wallets
+    create salary updater, add stats, test it
+
+Action after creating new wallet: check last smses until salary
+
+Resolve problem with the wrong sms order
