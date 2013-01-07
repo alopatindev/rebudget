@@ -5,6 +5,7 @@ import android.app.AlertDialog.Builder;
 import android.app.ListActivity;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,18 +46,24 @@ public class WalletsActivity extends ListActivity {
         registerForContextMenu(getListView());
     }
 
-    private void updateListView() {
-        setListAdapter(createAdapter(m_listViewItems.toArray(new String[0])));
+    private void createWallet(String name) {
+        name = name.trim();
+        if (name.length() == 0 || !MainTabActivity.s_dc.addWallet(name, 0.0f))
+            showDialog(DIALOG_NEW_WALLET_EXISTS);
+        else
+            updateListView();
     }
 
-    private void addToListView(String item) {
-        item = item.trim();
-        if (item.length() == 0 || m_listViewItems.indexOf(item) != -1) {
-            showDialog(DIALOG_NEW_WALLET_EXISTS);
-        } else {
-            m_listViewItems.add(item);
-            updateListView();
+    private void updateListView() {
+        m_listViewItems.clear();
+        Cursor c = MainTabActivity.s_dc.selectWallets();
+        if (c.moveToFirst()) {
+            do {
+                String item = String.format("%s (%2.2f)", c.getString(0), c.getFloat(1));
+                m_listViewItems.add(item);
+            } while (c.moveToNext());
         }
+        setListAdapter(createAdapter(m_listViewItems.toArray(new String[0])));
     }
 
     protected ListAdapter createAdapter(String [] values) {
@@ -105,8 +112,8 @@ public class WalletsActivity extends ListActivity {
                         EditText ed = (EditText) v.findViewById(R.id.wallet_name);
                         String walletName = ed.getText().toString();
                         Common.LOGI("create new wallet '" +
-                                             walletName + "'");
-                        addToListView(walletName + " (??.??)"); // TODO: show current balance
+                                    walletName + "'");
+                        createWallet(walletName);
                         ed.setText("");
                     }
                 }

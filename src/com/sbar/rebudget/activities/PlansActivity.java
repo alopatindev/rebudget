@@ -22,12 +22,13 @@ public class PlansActivity extends Activity {
 
         /*MainTabActivity.s_dc.open();
         Cursor c = MainTabActivity.s_dc.selectFilters();
-        c.moveToFirst();
-        do {
-            for (int i = 0; i < c.getColumnCount(); ++i) {
-                Common.LOGI("''" + i + "''");
-                Common.LOGI("'" + c.getColumnName(i) + "' '" + c.getString(i) + "'");
-            }
-        } while (c.moveToNext());*/
+        if (c.moveToFirst()) {
+            do {
+                for (int i = 0; i < c.getColumnCount(); ++i) {
+                    Common.LOGI("''" + i + "''");
+                    Common.LOGI("'" + c.getColumnName(i) + "' '" + c.getString(i) + "'");
+                }
+            } while (c.moveToNext());
+        }*/
     }
 }

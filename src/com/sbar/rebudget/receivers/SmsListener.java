@@ -44,23 +44,23 @@ public class SmsListener extends BroadcastReceiver {
         Cursor cursor = context.getContentResolver().query(
             Uri.parse("content://sms/inbox"), null, null, null, null
         );
-        cursor.moveToFirst();
+        if (cursor.moveToFirst()) {
+            do {
+                for(int i = 0; i < cursor.getColumnCount(); i++)
+                {
+                    String key = cursor.getColumnName(i) + "";
+                    String val = cursor.getString(i) + "";
+                    String msgData = key + ": " + val;
 
-        do {
-            for(int i = 0; i < cursor.getColumnCount(); i++)
-            {
-                String key = cursor.getColumnName(i) + "";
-                String val = cursor.getString(i) + "";
-                String msgData = key + ": " + val;
-
-                if (key.equals("_id") ||
-                    key.equals("date") ||
-                    key.equals("date_sent") ||
-                    key.equals("address") ||
-                    key.equals("body"))
-                    Common.LOGI(msgData);
-            }
-            Common.LOGI("====");
-        } while (cursor.moveToNext());
+                    if (key.equals("_id") ||
+                        key.equals("date") ||
+                        key.equals("date_sent") ||
+                        key.equals("address") ||
+                        key.equals("body"))
+                        Common.LOGI(msgData);
+                }
+                Common.LOGI("====");
+            } while (cursor.moveToNext());
+        }
     }*/
 }

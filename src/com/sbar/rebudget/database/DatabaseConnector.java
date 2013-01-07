@@ -82,7 +82,19 @@ public class DatabaseConnector {
         return db.insert("stats", null, c) != -1;
     }
 
+    public boolean updateWallet(String currentName, String name, float money)
+    {
+        ContentValues c = new ContentValues();
+        c.put("name", name);
+        c.put("money", money);
+        return db.update("wallets", c, "where name = ?", new String[] {currentName}) != 0;
+    }
+
     public Cursor selectFilters() {
         return db.query("filters", new String[] {"sms_address", "sms_text_contains"}, null, null, null, null, null, null);
+    }
+
+    public Cursor selectWallets() {
+        return db.query("wallets", new String[] {"name", "money"}, null, null, null, null, null, null);
     }
 }
