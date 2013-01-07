@@ -106,7 +106,7 @@ public class WalletsActivity extends ListActivity {
                         String walletName = ed.getText().toString();
                         Common.LOGI("create new wallet '" +
                                              walletName + "'");
-                        addToListView(walletName);
+                        addToListView(walletName + " (??.??)"); // TODO: show current balance
                         ed.setText("");
                     }
                 }
