@@ -25,6 +25,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.content.Intent;
 
 import com.sbar.rebudget.Common;
+import com.sbar.rebudget.Pair;
 import com.sbar.rebudget.R;
 
 public class WalletsActivity extends ListActivity {
@@ -32,14 +33,14 @@ public class WalletsActivity extends ListActivity {
     private static final int DIALOG_NEW_WALLET_EXISTS = 2;
     private static final int DIALOG_REMOVE_WALLET = 3;
 
-    private ArrayList<String> m_listViewItems = null;
+    private ArrayList<Pair<String, Float>> m_listViewItems = null;
     private String m_listViewItemSelected = null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wallets);
 
-        m_listViewItems = new ArrayList<String>();
+        m_listViewItems = new ArrayList<Pair<String, Float>>();
 
         updateListView();
         addButtonsListeners();
@@ -56,14 +57,21 @@ public class WalletsActivity extends ListActivity {
 
     private void updateListView() {
         m_listViewItems.clear();
+
         Cursor c = MainTabActivity.s_dc.selectWallets();
         if (c.moveToFirst()) {
             do {
-                String item = String.format("%s (%2.2f)", c.getString(0), c.getFloat(1));
-                m_listViewItems.add(item);
+                String item = c.getString(0);
+                Float money = new Float(c.getFloat(1));
+                m_listViewItems.add(new Pair<String, Float>(item, money));
             } while (c.moveToNext());
         }
-        setListAdapter(createAdapter(m_listViewItems.toArray(new String[0])));
+
+        ArrayList<String> outList = new ArrayList<String>();
+        for (Pair<String, Float> i : m_listViewItems)
+            outList.add(String.format("%s (%2.2f)", i.first, i.second));
+
+        setListAdapter(createAdapter(outList.toArray(new String[0])));
     }
 
     protected ListAdapter createAdapter(String [] values) {
@@ -165,6 +173,8 @@ public class WalletsActivity extends ListActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
                             Common.LOGI("remove wallet '" + walletName + "'");
+                            if (MainTabActivity.s_dc.deleteWallet(walletName))
+                                updateListView();
                         }
                     }
                 );
@@ -196,7 +206,7 @@ public class WalletsActivity extends ListActivity {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         
-        m_listViewItemSelected = m_listViewItems.get((int)info.id);
+        m_listViewItemSelected = m_listViewItems.get((int)info.id).first;
 
         switch(item.getItemId()) {
         case R.id.add_outcome_filter:

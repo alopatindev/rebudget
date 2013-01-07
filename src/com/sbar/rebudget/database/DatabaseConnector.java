@@ -24,14 +24,18 @@ public class DatabaseConnector {
     }
 
     public void close() {
-        if (db != null)
+        if (db != null) {
             db.close();
+            db = null;
+        }
     }
 
     public boolean addFilter(String category, boolean outcome, String smsAddress, String smsTextContains,
                           String costIntegerRegexp, String costFracRegexp,
                           String remainingIntegerRegexp, String remainingFracRegexp,
                           String storeRegexp) {
+        open();
+
         Common.LOGI("addFilter");
         ContentValues c = new ContentValues();
         c.put("category_id", "(select category_id from categories where category = \"" + category + "\")");
@@ -48,6 +52,8 @@ public class DatabaseConnector {
     }
 
     public boolean addCategory(String name, int color, float moneyPlanned, float moneySpent) {
+        open();
+
         Common.LOGI("addCategory");
         ContentValues c = new ContentValues();
 
@@ -60,6 +66,8 @@ public class DatabaseConnector {
     }
 
     public boolean addWallet(String name, float money) {
+        open();
+
         Common.LOGI("addWallet");
         ContentValues c = new ContentValues();
 
@@ -72,6 +80,8 @@ public class DatabaseConnector {
     public boolean addStat(long datetime,
                            float moneyPlanned, float moneySpent)
     {
+        open();
+
         Common.LOGI("addStat");
         ContentValues c = new ContentValues();
 
@@ -82,19 +92,33 @@ public class DatabaseConnector {
         return db.insert("stats", null, c) != -1;
     }
 
+    public boolean deleteWallet(String name)
+    {
+        open();
+
+        return db.delete("wallets", "name = ?", new String[] {name}) != 0;
+    }
+
     public boolean updateWallet(String currentName, String name, float money)
     {
+        open();
+
         ContentValues c = new ContentValues();
         c.put("name", name);
         c.put("money", money);
+
         return db.update("wallets", c, "where name = ?", new String[] {currentName}) != 0;
     }
 
     public Cursor selectFilters() {
+        open();
+
         return db.query("filters", new String[] {"sms_address", "sms_text_contains"}, null, null, null, null, null, null);
     }
 
     public Cursor selectWallets() {
+        open();
+
         return db.query("wallets", new String[] {"name", "money"}, null, null, null, null, null, null);
     }
 }
