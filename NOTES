@@ -35,12 +35,13 @@ DB:
         float money_spent
 
     wallets
+        int id
+        string name
+        float money
 
-    #stats
-    #    int id
-    #    datetime date
-    #    int category_id
-    #    float planned
-    #    float spent
-
-remove unneeded singletons, use ClassName.this in click event handlers
+    stats
+        int id
+        int datetime
+        int category_id
+        float planned
+        float spent

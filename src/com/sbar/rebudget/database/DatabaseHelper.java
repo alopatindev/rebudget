@@ -14,9 +14,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Common.LOGI("DatabaseHelper.onCreate");
-        String createQuery = "create table filters (id integer primary key autoincrement, category_id integer, outcome boolean, sms_address, sms_text_contains, cost_integer_regexp, cost_frac_regexp, remaining_integer_regexp, remaining_frac_regexp);\n";
-        createQuery += "create table categories (id integer primary key autoincrement, name, color integer, money_planned float, money_spent float);";
-        db.execSQL(createQuery);
+        db.execSQL("create table filters (id integer primary key autoincrement, category_id integer, outcome boolean, sms_address, sms_text_contains, cost_integer_regexp, cost_frac_regexp, remaining_integer_regexp, remaining_frac_regexp, store_regexp);");
+        db.execSQL("create table categories (id integer primary key autoincrement, name, color integer, money_planned float, money_spent float, unique (name collate nocase asc));");
+        db.execSQL("create table wallets (id integer primary key autoincrement, name, money float, unique (name collate nocase asc));");
+        db.execSQL("create table stats (id integer primary key autoincrement, date integer, money_planned float, money_spent float);");
     }
 
     @Override

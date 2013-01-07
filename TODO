@@ -16,3 +16,7 @@ Database
 Action after creating new wallet: check last smses until salary
 
 Resolve problem with the wrong sms order
+
+Remove deprecated code
+
+Remove unneeded singletons, use ClassName.this in click event handlers

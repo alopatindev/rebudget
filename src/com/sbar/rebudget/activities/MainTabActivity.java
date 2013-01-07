@@ -24,8 +24,10 @@ public class MainTabActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        if (s_dc == null)
+        if (s_dc == null) {
             s_dc = new DatabaseConnector(this);
+            s_dc.open();
+        }
 
         m_tabHost = getTabHost();
         createTab("Plans", R.drawable.icon_plans_tab, PlansActivity.class);
@@ -34,6 +36,13 @@ public class MainTabActivity extends TabActivity {
         createTab("Stats", R.drawable.icon_stats_tab, StatsActivity.class);
 
         //SmsListener.readSms(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Common.LOGI("MainTabActivity.onDestroy");
+        s_dc.close();
     }
 
     private void createTab(final String title, int iconId, Class<?> activityClass) {

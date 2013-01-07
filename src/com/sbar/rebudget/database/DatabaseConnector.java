@@ -28,12 +28,13 @@ public class DatabaseConnector {
             db.close();
     }
 
-    public void addFilter(long categoryId, boolean outcome, String smsAddress, String smsTextContains,
+    public boolean addFilter(String category, boolean outcome, String smsAddress, String smsTextContains,
                           String costIntegerRegexp, String costFracRegexp,
-                          String remainingIntegerRegexp, String remainingFracRegexp) {
+                          String remainingIntegerRegexp, String remainingFracRegexp,
+                          String storeRegexp) {
         Common.LOGI("addFilter");
         ContentValues c = new ContentValues();
-        c.put("category_id", categoryId);
+        c.put("category_id", "(select category_id from categories where category = \"" + category + "\")");
         c.put("outcome", outcome);
         c.put("sms_address", smsAddress);
         c.put("sms_text_contains", smsTextContains);
@@ -41,10 +42,44 @@ public class DatabaseConnector {
         c.put("cost_frac_regexp", costFracRegexp);
         c.put("remaining_integer_regexp", remainingIntegerRegexp);
         c.put("remaining_frac_regexp", remainingFracRegexp);
+        c.put("store_regexp", storeRegexp);
 
-        //open();
-        db.insert("filters", null, c);
-        //close();
+        return db.insert("filters", null, c) != -1;
+    }
+
+    public boolean addCategory(String name, int color, float moneyPlanned, float moneySpent) {
+        Common.LOGI("addCategory");
+        ContentValues c = new ContentValues();
+
+        c.put("name", name);
+        c.put("color", color);
+        c.put("money_planned", moneyPlanned);
+        c.put("money_spent", moneySpent);
+
+        return db.insert("categories", null, c) != -1;
+    }
+
+    public boolean addWallet(String name, float money) {
+        Common.LOGI("addWallet");
+        ContentValues c = new ContentValues();
+
+        c.put("name", name);
+        c.put("money", money);
+
+        return db.insert("wallets", null, c) != -1;
+    }
+
+    public boolean addStat(long datetime,
+                           float moneyPlanned, float moneySpent)
+    {
+        Common.LOGI("addStat");
+        ContentValues c = new ContentValues();
+
+        c.put("datetime", datetime);
+        c.put("money_planned", moneyPlanned);
+        c.put("money_spent", moneySpent);
+
+        return db.insert("stats", null, c) != -1;
     }
 
     public Cursor selectFilters() {

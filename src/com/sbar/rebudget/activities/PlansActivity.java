@@ -20,16 +20,14 @@ public class PlansActivity extends Activity {
         ScrollView s = (ScrollView) findViewById(R.id.chart_scrollview);
         s.addView(new ChartView(this));
 
-        /*dc.open();
-        dc.addFilter(-1, true, "1234", "smscontains", "(\\d+?)\\.", "(\\d+?)\\.", "(\\d+?)\\.", "(\\d+?)\\.");
-        Cursor c = dc.selectFilters();
+        /*MainTabActivity.s_dc.open();
+        Cursor c = MainTabActivity.s_dc.selectFilters();
         c.moveToFirst();
         do {
             for (int i = 0; i < c.getColumnCount(); ++i) {
                 Common.LOGI("''" + i + "''");
                 Common.LOGI("'" + c.getColumnName(i) + "' '" + c.getString(i) + "'");
             }
-        } while (c.moveToNext());
-        dc.close();*/
+        } while (c.moveToNext());*/
     }
 }
