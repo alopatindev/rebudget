@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Collections;
 
-import com.sbar.rebudget.activities.MainTabActivity;
-
 public class ChartView extends View {
     //private ShapeDrawable mDrawable;
     Paint m_paint = new Paint();
@@ -24,11 +22,11 @@ public class ChartView extends View {
         super(context);
         m_paint.setAntiAlias(true);
 
-        addPiece("Reserved", 0xffff0000, 50.0f, 20.10f);
-        addPiece("Food", 0xff00ff00, 40.0f, 45.0f);
-        addPiece("Misc", 0xff0000ff, 10.0f, 5.0f);
+        //addPiece("Reserved", 0xffff0000, 50.0f, 20.10f);
+        //addPiece("Food", 0xff00ff00, 40.0f, 45.0f);
+        //addPiece("Misc", 0xff0000ff, 10.0f, 5.0f);
 
-        sortPieces();
+        //sortPieces();
     }
 
     float m_lastAngle;
@@ -116,8 +114,8 @@ public class ChartView extends View {
         return dcolor;
     }
 
-    void addPiece(final String text, int color,
-                  float moneyPlanned, float moneySpent) {
+    public void addPiece(final String text, int color,
+                         float moneyPlanned, float moneySpent) {
         // m_totalMoney - 360
         // planned - ?
         float anglePlanned = (moneyPlanned * 360.0f) / m_totalMoney;
@@ -135,7 +133,7 @@ public class ChartView extends View {
         m_pieces.add(new Piece(text, spentText, color, anglePlanned, angleSpent));
     }
 
-    void sortPieces() {
+    public void sortPieces() {
         Collections.sort(m_pieces, new PieceComparator());
     }
 

@@ -30,15 +30,19 @@ public class DatabaseConnector {
         }
     }
 
-    public boolean addFilter(String category, boolean outcome, String smsAddress, String smsTextContains,
-                          String costIntegerRegexp, String costFracRegexp,
-                          String remainingIntegerRegexp, String remainingFracRegexp,
-                          String storeRegexp) {
+    public boolean addFilter(
+        String category, String wallet,
+        boolean outcome, String smsAddress, String smsTextContains,
+        String costIntegerRegexp, String costFracRegexp,
+        String remainingIntegerRegexp, String remainingFracRegexp,
+        String storeRegexp)
+    {
         open();
 
         Common.LOGI("addFilter");
         ContentValues c = new ContentValues();
-        c.put("category_id", "(select category_id from categories where category = \"" + category + "\")");
+        c.put("category_id", "(select id from categories where name = \"" + category + "\")");
+        c.put("wallet_id", "(select id from wallets where name = \"" + category + "\")");
         c.put("outcome", outcome);
         c.put("sms_address", smsAddress);
         c.put("sms_text_contains", smsTextContains);
@@ -63,6 +67,13 @@ public class DatabaseConnector {
         c.put("money_spent", moneySpent);
 
         return db.insert("categories", null, c) != -1;
+    }
+
+    public boolean addDefaultCategories() {
+        boolean result = true;
+        result &= addCategory("Reserved", 0xFFAAAA00, 5000.0f, 0.0f);
+        result &= addCategory("Food", 0xFFAA00AA, 3000.0f, 0.0f);
+        return result;
     }
 
     public boolean addWallet(String name, float money) {
@@ -107,6 +118,12 @@ public class DatabaseConnector {
         c.put("name", name);
 
         return db.update("wallets", c, "name = ?", new String[] {currentName}) != 0;
+    }
+
+    public Cursor selectCategories() {
+        open();
+
+        return db.query("categories", new String[] {"name", "color", "money_planned", "money_spent"}, null, null, null, null, null, null);
     }
 
     public Cursor selectFilters() {

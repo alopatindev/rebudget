@@ -5,23 +5,23 @@ import android.app.AlertDialog.Builder;
 import android.app.ListActivity;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import java.util.ArrayList;
-//import java.util.List;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.content.Intent;
 
 import com.sbar.rebudget.Common;
 import com.sbar.rebudget.R;
@@ -47,17 +47,20 @@ public class CategoriesActivity extends ListActivity {
     }
 
     private void updateListView() {
+        m_listViewItems.clear();
+
+        Cursor c = MainTabActivity.s_dc.selectCategories();
+        if (c.moveToFirst()) {
+            do {
+                addToListView(c.getString(0));
+            } while (c.moveToNext());
+        }
+
         setListAdapter(createAdapter(m_listViewItems.toArray(new String[0])));
     }
 
     private void addToListView(String item) {
-        item = item.trim();
-        if (item.length() == 0 || m_listViewItems.indexOf(item) != -1) {
-            showDialog(DIALOG_NEW_CATEGORY_EXISTS);
-        } else {
-            m_listViewItems.add(item);
-            updateListView();
-        }
+        m_listViewItems.add(item);
     }
 
     protected ListAdapter createAdapter(String [] values) {
@@ -103,11 +106,27 @@ public class CategoriesActivity extends ListActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        EditText ed = (EditText) v.findViewById(R.id.category_name);
-                        String categoryName = ed.getText().toString();
+                        EditText edName = (EditText) v.findViewById(R.id.category_name);
+                        EditText edMoney = (EditText) v.findViewById(R.id.category_planned_money);
+                        EditText edColor = (EditText) v.findViewById(R.id.category_color);
+
+                        String categoryName = edName.getText().toString();
+                        float plannedMoney = 100.0f;
+                        int categoryColor = 0xffFFAA00;
+                        try {
+                            plannedMoney = Float.parseFloat(edMoney.getText().toString());
+                            categoryColor = Integer.parseInt(edColor.getText().toString());
+                        } catch (Throwable t) {
+                        }
+
                         Common.LOGI("create new category '" + categoryName + "'");
-                        addToListView(categoryName);
-                        ed.setText("");
+                        if (MainTabActivity.s_dc.addCategory(categoryName, 0xFFFFFF00, plannedMoney, 0.0f)) {
+                            updateListView();
+                            edName.setText("");
+                            edMoney.setText("");
+                            edColor.setText("0xffFFAA00");
+                        } else
+                            showDialog(DIALOG_NEW_CATEGORY_EXISTS);
                     }
                 }
             );
@@ -150,7 +169,7 @@ public class CategoriesActivity extends ListActivity {
                 final String categoryName = m_listViewItemSelected;
 
                 builder.setView(v);
-                builder.setMessage("WARNING: the next operation cannot be undone! Are you sure you want to remove the category \"" + categoryName + "\"? All spent money will be substracted from Reserve category");
+                builder.setMessage("WARNING: the next operation cannot be undone! Are you sure you want to remove the category \"" + categoryName + "\"? All spent money will be substracted from Reserved category");
                 builder.setCancelable(true);
                 builder.setPositiveButton(
                     "yes",

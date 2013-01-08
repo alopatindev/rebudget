@@ -13,22 +13,33 @@ import com.sbar.rebudget.views.ChartView;
 
 public class PlansActivity extends Activity {
     LinearLayout m_layout = null;
+    ChartView m_chartView = null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.plans);
-        ScrollView s = (ScrollView) findViewById(R.id.chart_scrollview);
-        s.addView(new ChartView(this));
 
-        /*MainTabActivity.s_dc.open();
-        Cursor c = MainTabActivity.s_dc.selectFilters();
+        ScrollView scrollView = (ScrollView) findViewById(R.id.chart_scrollview);
+        m_chartView = new ChartView(this);
+        updateChartView();
+        scrollView.addView(m_chartView);
+    }
+
+    public void updateChartView() {
+        Cursor c = MainTabActivity.s_dc.selectCategories();
         if (c.moveToFirst()) {
             do {
-                for (int i = 0; i < c.getColumnCount(); ++i) {
-                    Common.LOGI("''" + i + "''");
-                    Common.LOGI("'" + c.getColumnName(i) + "' '" + c.getString(i) + "'");
-                }
+                m_chartView.addPiece(
+                    c.getString(0), c.getInt(1),
+                    c.getFloat(2), c.getFloat(3)
+                );
             } while (c.moveToNext());
-        }*/
+            m_chartView.sortPieces();
+        } else {
+            if (MainTabActivity.s_dc.addDefaultCategories())
+                updateChartView();
+            else
+                Common.LOGE("failed to create default categories");
+        }
     }
 }
