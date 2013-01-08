@@ -18,6 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table categories (id integer primary key autoincrement, name, color integer, money_planned float, money_spent float, unique (name collate nocase asc));");
         db.execSQL("create table wallets (id integer primary key autoincrement, name, money float, unique (name collate nocase asc));");
         db.execSQL("create table stats (id integer primary key autoincrement, date integer, money_planned float, money_spent float);");
+        db.execSQL("create table stores (id integer primary key autoincrement, name, category_id integer);");
     }
 
     @Override

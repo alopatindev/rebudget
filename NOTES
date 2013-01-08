@@ -17,7 +17,6 @@ UI:
 DB:
     filters
         int id
-        int category_id
         bool outcome
         string sms_address
         string sms_text_contains
@@ -45,3 +44,8 @@ DB:
         int category_id
         float planned
         float spent
+
+    stores
+        int id
+        string name
+        int category_id

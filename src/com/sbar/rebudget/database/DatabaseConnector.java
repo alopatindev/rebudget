@@ -31,8 +31,8 @@ public class DatabaseConnector {
     }
 
     public boolean addFilter(
-        String category, String wallet,
-        boolean outcome, String smsAddress, String smsTextContains,
+        String wallet, boolean outcome,
+        String smsAddress, String smsTextContains,
         String costIntegerRegexp, String costFracRegexp,
         String remainingIntegerRegexp, String remainingFracRegexp,
         String storeRegexp)
@@ -41,7 +41,6 @@ public class DatabaseConnector {
 
         Common.LOGI("addFilter");
         ContentValues c = new ContentValues();
-        c.put("category_id", "(select id from categories where name = \"" + category + "\")");
         c.put("wallet_id", "(select id from wallets where name = \"" + category + "\")");
         c.put("outcome", outcome);
         c.put("sms_address", smsAddress);
@@ -103,8 +102,34 @@ public class DatabaseConnector {
         return db.insert("stats", null, c) != -1;
     }
 
-    public boolean deleteWallet(String name)
-    {
+    public boolean addStore(String name) {
+        open();
+
+        Common.LOGI("addStore");
+        ContentValues c = new ContentValues();
+
+        c.put("name", name);
+        c.put("category_id", "(select id from categories where name = \"Reserved\")");
+
+        return db.insert("stores", null, c) != -1;
+    }
+
+    public boolean removeCategory(String name) {
+        // substract category money from Reserved category
+        // update category_id to Reserved in stores table
+        // remove category
+        if (name == "Reserved")
+            return false;
+        return false;
+    }
+
+    public boolean updateStore(String name, String category) {
+        open();
+        c.put("category_id", "(select id from categories where name = " + category + ")");
+        return db.update("stores", c, "name = ?", new String[] {currentName}) != 0;
+    }
+
+    public boolean deleteWallet(String name) {
         open();
         // TODO: remove filters
         return db.delete("wallets", "name = ?", new String[] {name}) != 0;
