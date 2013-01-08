@@ -82,7 +82,6 @@ public class AddFilterStoreActivity extends Activity {
             Pattern r = Pattern.compile(regexp);
             Matcher m = r.matcher(m_smsText.getText().toString());
             m_exampleStore = m.find() ? m.group(1) : "??";
-            int num = Integer.parseInt(m_exampleStore.trim());
         } catch (Throwable e) {
             m_exampleStore = "??";
         }

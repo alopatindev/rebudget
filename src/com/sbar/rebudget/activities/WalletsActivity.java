@@ -162,7 +162,7 @@ public class WalletsActivity extends ListActivity {
 
         case DIALOG_RENAME_WALLET:
         {
-            View v = inflater.inflate(R.layout.dialog_new_wallet, null);
+            final View v = inflater.inflate(R.layout.dialog_new_wallet, null);
             EditText ed = (EditText) v.findViewById(R.id.wallet_name);
             String walletName = m_listViewItemSelected;
 
