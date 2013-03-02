@@ -4,9 +4,17 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ListActivity;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,14 +23,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import java.util.ArrayList;
-//import java.util.List;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.content.Intent;
+import java.util.ArrayList;
 
 import com.sbar.rebudget.Common;
 import com.sbar.rebudget.Pair;
@@ -51,7 +53,7 @@ public class WalletsActivity extends ListActivity {
     private void createWallet(String name) {
         name = name.trim();
         if (name.length() == 0 || !MainTabActivity.s_dc.addWallet(name, 0.0f))
-            showDialog(DIALOG_NEW_WALLET_EXISTS);
+            showMyDialog(DIALOG_NEW_WALLET_EXISTS);
         else
             updateListView();
     }
@@ -90,7 +92,7 @@ public class WalletsActivity extends ListActivity {
             @Override
             public void onClick(View arg0) {
                 Common.LOGI("add new wallet");
-                showDialog(DIALOG_NEW_WALLET);
+                showMyDialog(DIALOG_NEW_WALLET);
             }
         });
     }
@@ -100,7 +102,15 @@ public class WalletsActivity extends ListActivity {
         Common.LOGI("pos:" + position + " id:"+id);
     }
 
-    @Override
+    void showMyDialog(int id) {
+        String walletName = m_listViewItemSelected;
+        LayoutInflater inflater = getLayoutInflater();
+        WalletDialogFragment
+            .newInstance(inflater, this, id, walletName)
+            .show(getFragmentManager(), "");
+    }
+
+    /*@Override
     protected Dialog onCreateDialog(int id) {
         LayoutInflater inflater = getLayoutInflater();
         Builder builder = new AlertDialog.Builder(this);
@@ -152,7 +162,7 @@ public class WalletsActivity extends ListActivity {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
-                            showDialog(DIALOG_NEW_WALLET);
+                            showMyDialog(DIALOG_NEW_WALLET);
                         }
                     }
                 );
@@ -231,7 +241,7 @@ public class WalletsActivity extends ListActivity {
         }
 
         return super.onCreateDialog(id);
-    }
+    }*/
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
@@ -256,13 +266,169 @@ public class WalletsActivity extends ListActivity {
             //TODO
             return true;
         case R.id.rename_wallet:
-            showDialog(DIALOG_RENAME_WALLET);
+            showMyDialog(DIALOG_RENAME_WALLET);
             return true;
         case R.id.remove_wallet:
-            showDialog(DIALOG_REMOVE_WALLET);
+            showMyDialog(DIALOG_REMOVE_WALLET);
             return true;
         default:
             return super.onContextItemSelected(item);
+        }
+    }
+
+    private static class WalletDialogFragment extends DialogFragment {
+        private LayoutInflater m_inflater = null;
+        private WalletsActivity m_activity = null;
+        private int m_id = -1;
+        private String m_walletName = null;
+
+        public WalletDialogFragment(
+            LayoutInflater inflater, WalletsActivity activity,
+            int id, String walletName) {
+            super();
+            m_inflater = inflater;
+            m_activity = activity;
+            m_id = id;
+            m_walletName = walletName;
+        }
+
+        public Dialog onCreateDialog(Bundle b) {
+            LayoutInflater inflater = m_inflater;
+            Builder builder = new AlertDialog.Builder(m_activity);
+
+            switch (m_id) {
+            case DIALOG_NEW_WALLET:
+            {
+            final View v = inflater.inflate(R.layout.dialog_new_wallet, null);
+
+            builder.setView(v);
+            builder.setMessage("Create new wallet");
+            builder.setCancelable(true);
+            builder.setPositiveButton(
+                "ok",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        EditText ed = (EditText) v.findViewById(R.id.wallet_name);
+                        String walletName = ed.getText().toString();
+                        Common.LOGI("create new wallet '" +
+                                    walletName + "'");
+                        WalletDialogFragment.this.m_activity.createWallet(walletName);
+                        ed.setText("");
+                    }
+                }
+            );
+            builder.setNegativeButton(
+                "cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                }
+            );
+            return builder.create();
+            }
+
+            case DIALOG_NEW_WALLET_EXISTS:
+            {
+            final View v = inflater.inflate(
+                R.layout.dialog_new_wallet_exists,
+                null
+            );
+
+            builder.setView(v);
+            builder.setMessage("This wallet already exists or has an empty text. Use another name.");
+            builder.setCancelable(false);
+            builder.setPositiveButton(
+                "ok",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        WalletDialogFragment.this.m_activity.showMyDialog(DIALOG_NEW_WALLET);
+                    }
+                }
+            );
+
+            return builder.create();
+            }
+
+            case DIALOG_RENAME_WALLET:
+            {
+            final View v = inflater.inflate(R.layout.dialog_new_wallet, null);
+            EditText ed = (EditText) v.findViewById(R.id.wallet_name);
+            
+            ed.setText(m_walletName);
+
+            builder.setView(v);
+            builder.setMessage("Renaming wallet " + m_walletName);
+            builder.setCancelable(true);
+            builder.setPositiveButton(
+                "ok",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        EditText ed = (EditText) v.findViewById(R.id.wallet_name);
+                        String walletName = WalletDialogFragment.this.m_walletName;
+                        String newWalletName = ed.getText().toString();
+                        Common.LOGI("renaming wallet to '" +
+                                    newWalletName + "'");
+                        if (MainTabActivity.s_dc.renameWallet(walletName, newWalletName))
+                            WalletDialogFragment.this.m_activity.updateListView();
+                        ed.setText("");
+                    }
+                }
+            );
+            builder.setNegativeButton(
+                "cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                }
+            );
+            return builder.create();
+            }
+
+            case DIALOG_REMOVE_WALLET:
+            {
+            final View v = inflater.inflate(R.layout.dialog_remove_wallet, null);
+
+            builder.setView(v);
+            builder.setMessage("WARNING: the next operation cannot be undone! Are you sure you want to remove the wallet \"" + m_walletName + "\" with all its filters?");
+            builder.setCancelable(true);
+            builder.setPositiveButton(
+                "yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        String walletName = WalletDialogFragment.this.m_walletName;
+                        Common.LOGI("remove wallet '" + walletName + "'");
+                        if (MainTabActivity.s_dc.deleteWallet(walletName))
+                            WalletDialogFragment.this.m_activity.updateListView();
+                    }
+                }
+            );
+            builder.setNegativeButton(
+                "no",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                }
+            );
+
+            return builder.create();
+            }
+
+            }
+
+            return null;
+        }
+
+        public static DialogFragment newInstance(
+            LayoutInflater inflater, WalletsActivity activity,
+            int id, String walletName) {
+            return new WalletDialogFragment(inflater, activity, id, walletName);
         }
     }
 }

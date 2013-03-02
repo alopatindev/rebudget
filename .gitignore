@@ -4,5 +4,6 @@
 *.so
 bin/
 gen/
+libs/
 proguard-project.txt
 hs_err_pid*.log
