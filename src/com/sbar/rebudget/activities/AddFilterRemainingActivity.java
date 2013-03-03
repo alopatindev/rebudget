@@ -16,6 +16,7 @@ import com.sbar.rebudget.R;
 import com.sbar.rebudget.activities.AddOutcomeFilterActivity;
 import com.sbar.rebudget.activities.MainTabActivity;
 import com.sbar.rebudget.Common;
+import com.sbar.rebudget.FilterStruct;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -97,6 +98,7 @@ public class AddFilterRemainingActivity extends Activity {
             Matcher m = r.matcher(m_smsText.getText().toString());
             m_exampleRemainingInteger = m.find() ? m.group(1) : "??";
             int num = Integer.parseInt(m_exampleRemainingInteger.trim());
+            FilterStruct.s_instance.remainingIntegerRegexp = regexp;
         } catch (Exception e) {
             m_exampleRemainingInteger = "??";
         }
@@ -109,6 +111,7 @@ public class AddFilterRemainingActivity extends Activity {
             Matcher m = r.matcher(m_smsText.getText().toString());
             m_exampleRemainingFrac = m.find() ? m.group(1) : "??";
             int num = Integer.parseInt(m_exampleRemainingFrac.trim());
+            FilterStruct.s_instance.remainingFracRegexp = regexp;
         } catch (Exception e) {
             m_exampleRemainingFrac = "??";
         }

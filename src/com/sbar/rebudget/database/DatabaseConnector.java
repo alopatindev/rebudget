@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.sbar.rebudget.database.DatabaseHelper;
 import com.sbar.rebudget.Common;
+import com.sbar.rebudget.FilterStruct;
 
 public class DatabaseConnector {
     public final String DB_NAME = "rebudget";
@@ -30,26 +31,21 @@ public class DatabaseConnector {
         }
     }
 
-    public boolean addFilter(
-        String wallet, boolean outcome,
-        String smsAddress, String smsTextContains,
-        String costIntegerRegexp, String costFracRegexp,
-        String remainingIntegerRegexp, String remainingFracRegexp,
-        String storeRegexp)
+    public boolean addFilter(FilterStruct f)
     {
         open();
 
         Common.LOGI("addFilter");
         ContentValues c = new ContentValues();
-        c.put("wallet_id", "(select id from wallets where name = \"" + category + "\")");
-        c.put("outcome", outcome);
-        c.put("sms_address", smsAddress);
-        c.put("sms_text_contains", smsTextContains);
-        c.put("cost_integer_regexp", costIntegerRegexp);
-        c.put("cost_frac_regexp", costFracRegexp);
-        c.put("remaining_integer_regexp", remainingIntegerRegexp);
-        c.put("remaining_frac_regexp", remainingFracRegexp);
-        c.put("store_regexp", storeRegexp);
+        c.put("wallet_id", "(select id from wallets where name = \"" + f.wallet + "\")");
+        c.put("outcome", f.outcome);
+        c.put("sms_address", f.smsAddress);
+        c.put("sms_text_contains", f.smsTextContains);
+        c.put("cost_integer_regexp", f.costIntegerRegexp);
+        c.put("cost_frac_regexp", f.costFracRegexp);
+        c.put("remaining_integer_regexp", f.remainingIntegerRegexp);
+        c.put("remaining_frac_regexp", f.remainingFracRegexp);
+        c.put("store_regexp", f.storeRegexp);
 
         return db.insert("filters", null, c) != -1;
     }
@@ -125,8 +121,9 @@ public class DatabaseConnector {
 
     public boolean updateStore(String name, String category) {
         open();
+        ContentValues c = new ContentValues();
         c.put("category_id", "(select id from categories where name = " + category + ")");
-        return db.update("stores", c, "name = ?", new String[] {currentName}) != 0;
+        return db.update("stores", c, "name = ?", new String[] {name}) != 0;
     }
 
     public boolean deleteWallet(String name) {

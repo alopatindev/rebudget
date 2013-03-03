@@ -1,7 +1,10 @@
 package com.sbar.rebudget.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,6 +20,7 @@ import com.sbar.rebudget.activities.AddFilterRemainingActivity;
 import com.sbar.rebudget.activities.AddOutcomeFilterActivity;
 import com.sbar.rebudget.activities.MainTabActivity;
 import com.sbar.rebudget.Common;
+import com.sbar.rebudget.FilterStruct;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -63,8 +67,27 @@ public class AddFilterStoreActivity extends Activity {
         m_nextButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                //Intent intent = new Intent(AddFilterStoreActivity.instance, AddFilterRemainingActivity.class);
-                //startActivity(intent);
+                if (FilterStruct.s_instance == null ||
+                    !MainTabActivity.s_dc.addFilter(FilterStruct.s_instance)) {
+                    Common.LOGE("Failed to create a filter (instance==null)==" + (FilterStruct.s_instance == null));
+                    Builder builder = new AlertDialog.Builder(AddFilterStoreActivity.this);
+                    //builder.setView(v);
+                    builder.setMessage("Failed to create a filter.");
+                    builder.setCancelable(true);
+                    builder.setPositiveButton(
+                        "ok",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                //dismiss();
+                            }
+                        }
+                    );
+                    builder.create().show();
+                } else {
+                    FilterStruct.s_instance = null;
+                    System.gc();
+                }
             }
         });
 

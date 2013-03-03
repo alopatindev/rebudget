@@ -17,6 +17,7 @@ import com.sbar.rebudget.activities.AddFilterRemainingActivity;
 import com.sbar.rebudget.activities.AddOutcomeFilterActivity;
 import com.sbar.rebudget.activities.MainTabActivity;
 import com.sbar.rebudget.Common;
+import com.sbar.rebudget.FilterStruct;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,7 +49,8 @@ public class AddFilterCostActivity extends Activity {
         smsCostInteger.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                AddFilterCostActivity.instance.setSmsCostIntegerRegexp(s.toString());
+                String text = s.toString();
+                AddFilterCostActivity.instance.setSmsCostIntegerRegexp(text);
                 AddFilterCostActivity.instance.m_nextButton.setEnabled(m_exampleCostInteger != "??");
             }
 
@@ -63,7 +65,8 @@ public class AddFilterCostActivity extends Activity {
         smsCostFrac.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                AddFilterCostActivity.instance.setSmsCostFracRegexp(s.toString());
+                String text = s.toString();
+                AddFilterCostActivity.instance.setSmsCostFracRegexp(text);
             }
 
             @Override
@@ -98,6 +101,7 @@ public class AddFilterCostActivity extends Activity {
             Matcher m = r.matcher(m_smsText.getText().toString());
             m_exampleCostInteger = m.find() ? m.group(1) : "??";
             int num = Integer.parseInt(m_exampleCostInteger.trim());
+            FilterStruct.s_instance.costIntegerRegexp = regexp;
         } catch (Throwable e) {
             m_exampleCostInteger = "??";
         }
@@ -110,6 +114,7 @@ public class AddFilterCostActivity extends Activity {
             Matcher m = r.matcher(m_smsText.getText().toString());
             m_exampleCostFrac = m.find() ? m.group(1) : "??";
             int num = Integer.parseInt(m_exampleCostFrac.trim());
+            FilterStruct.s_instance.costFracRegexp = regexp;
         } catch (Exception e) {
             m_exampleCostFrac = "??";
         }

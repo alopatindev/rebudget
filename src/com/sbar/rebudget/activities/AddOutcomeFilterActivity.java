@@ -18,11 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
-import com.sbar.rebudget.Common;
 import com.sbar.rebudget.activities.MainTabActivity;
 import com.sbar.rebudget.activities.AddFilterCostActivity;
+import com.sbar.rebudget.Common;
+import com.sbar.rebudget.FilterStruct;
 import com.sbar.rebudget.R;
-
 
 public class AddOutcomeFilterActivity extends ListActivity {
     static AddOutcomeFilterActivity instance = null;
@@ -37,6 +37,9 @@ public class AddOutcomeFilterActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         instance = this;
 
+        FilterStruct.s_instance = new FilterStruct();
+        FilterStruct.s_instance.outcome = true;
+
         setContentView(R.layout.add_filter);
 
         m_nextButton = (Button) findViewById(R.id.next);
@@ -48,12 +51,14 @@ public class AddOutcomeFilterActivity extends ListActivity {
         m_smsContainsText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                final String text = s.toString();
+                String text = s.toString();
                 AddOutcomeFilterActivity.instance.searchSMS(text);
                 ListAdapter adapter = AddOutcomeFilterActivity.instance.getListAdapter();
-                AddOutcomeFilterActivity.instance.m_nextButton.setEnabled(
-                    adapter.getCount() > 0 && text.length() > 0 && m_smsSelected != null
-                );
+
+                AddOutcomeFilterActivity.instance.m_nextButton.setEnabled(true);
+                FilterStruct.s_instance.smsTextContains = text;
+                FilterStruct.s_instance.smsAddress = m_smsAddress.getText().toString();
+                AddOutcomeFilterActivity.instance.m_nextButton.setEnabled(adapter.getCount() > 0 && text.length() > 0 && m_smsSelected != null);
             }
 
             @Override
