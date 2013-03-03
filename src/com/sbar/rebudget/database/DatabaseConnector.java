@@ -37,11 +37,14 @@ public class DatabaseConnector {
 
         Common.LOGI("addFilter");
 
+        if (f.costFracRegexp == null) f.costFracRegexp = "";
+        if (f.remainingFracRegexp == null) f.remainingFracRegexp = "";
+
         Cursor cur = db.query(
             "filters",
             new String[] {"wallet_id"},
             "outcome= ? and wallet_id = (select id from wallets where name =?) and sms_address = ? and sms_text_contains = ? and cost_integer_regexp = ? and cost_frac_regexp = ? and remaining_integer_regexp = ? and remaining_frac_regexp = ?",
-            new String[]{f.outcome ? "1" : "0", f.wallet, f.smsAddress, f.smsTextContains, f.costIntegerRegexp, f.costFracRegexp, f.remainingFracRegexp},
+            new String[]{f.outcome ? "1" : "0", f.wallet, f.smsAddress, f.smsTextContains, f.costIntegerRegexp, f.costFracRegexp, f.remainingIntegerRegexp, f.remainingFracRegexp},
             null, null, null, null
         );
         int count = cur.getCount();

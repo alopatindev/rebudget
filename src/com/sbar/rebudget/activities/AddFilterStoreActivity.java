@@ -85,7 +85,13 @@ public class AddFilterStoreActivity extends Activity {
                     builder.create().show();
                 } else {
                     FilterStruct.s_instance = null;
-                    AddOutcomeFilterActivity.instance.finish();
+                    if (AddOutcomeFilterActivity.instance != null)
+                        AddOutcomeFilterActivity.instance.finish();
+                    else
+                        AddIncomeFilterActivity.instance.finish();
+                    AddFilterCostActivity.instance.finish();
+                    AddFilterRemainingActivity.instance.finish();
+                    AddFilterStoreActivity.instance.finish();
                     System.gc();
                 }
             }
