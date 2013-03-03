@@ -36,6 +36,19 @@ public class DatabaseConnector {
         open();
 
         Common.LOGI("addFilter");
+
+        Cursor cur = db.query(
+            "filters",
+            new String[] {"wallet_id"},
+            "outcome= ? and wallet_id = (select id from wallets where name =?) and sms_address = ? and sms_text_contains = ? and cost_integer_regexp = ? and cost_frac_regexp = ? and remaining_integer_regexp = ? and remaining_frac_regexp = ?",
+            new String[]{f.outcome ? "1" : "0", f.wallet, f.smsAddress, f.smsTextContains, f.costIntegerRegexp, f.costFracRegexp, f.remainingFracRegexp},
+            null, null, null, null
+        );
+        int count = cur.getCount();
+        Common.LOGI("count=" + count);
+        if (count > 0)
+            return false;
+
         ContentValues c = new ContentValues();
         c.put("wallet_id", "(select id from wallets where name = \"" + f.wallet + "\")");
         c.put("outcome", f.outcome);

@@ -79,13 +79,13 @@ public class AddFilterStoreActivity extends Activity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                //dismiss();
                             }
                         }
                     );
                     builder.create().show();
                 } else {
                     FilterStruct.s_instance = null;
+                    AddOutcomeFilterActivity.instance.finish();
                     System.gc();
                 }
             }

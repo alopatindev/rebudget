@@ -1,7 +1,7 @@
 package com.sbar.rebudget;
 
 public class FilterStruct {
-    public String wallet; // TODO: update
+    public String wallet;
     public boolean outcome;
     public String smsAddress;
     public String smsTextContains;

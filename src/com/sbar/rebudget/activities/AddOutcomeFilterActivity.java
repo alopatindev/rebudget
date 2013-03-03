@@ -18,8 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
-import com.sbar.rebudget.activities.MainTabActivity;
 import com.sbar.rebudget.activities.AddFilterCostActivity;
+import com.sbar.rebudget.activities.MainTabActivity;
+import com.sbar.rebudget.activities.WalletsActivity;
 import com.sbar.rebudget.Common;
 import com.sbar.rebudget.FilterStruct;
 import com.sbar.rebudget.R;
@@ -39,6 +40,7 @@ public class AddOutcomeFilterActivity extends ListActivity {
 
         FilterStruct.s_instance = new FilterStruct();
         FilterStruct.s_instance.outcome = true;
+        FilterStruct.s_instance.wallet = WalletsActivity.s_instance.getSelectedWallet();
 
         setContentView(R.layout.add_filter);
 

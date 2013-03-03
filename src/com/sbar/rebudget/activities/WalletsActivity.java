@@ -38,9 +38,15 @@ public class WalletsActivity extends ListActivity {
 
     private ArrayList<Pair<String, Float>> m_listViewItems = null;
     private String m_listViewItemSelected = null;
+    public static WalletsActivity s_instance = null;
+
+    public String getSelectedWallet() {
+        return m_listViewItemSelected;
+    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        s_instance = this;
         setContentView(R.layout.wallets);
 
         m_listViewItems = new ArrayList<Pair<String, Float>>();
@@ -48,6 +54,11 @@ public class WalletsActivity extends ListActivity {
         updateListView();
         addButtonsListeners();
         registerForContextMenu(getListView());
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        s_instance = null;
     }
 
     private void createWallet(String name) {
@@ -103,10 +114,9 @@ public class WalletsActivity extends ListActivity {
     }
 
     void showMyDialog(int id) {
-        String walletName = m_listViewItemSelected;
         LayoutInflater inflater = getLayoutInflater();
         WalletDialogFragment
-            .newInstance(inflater, this, id, walletName)
+            .newInstance(inflater, this, id, getSelectedWallet())
             .show(getFragmentManager(), "");
     }
 
